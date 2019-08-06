@@ -6,26 +6,18 @@
             [cheshire.core :as json]))
 
 
-(defn handler "reads the query-param limit and show only limit results"
+(defn handler
+  "reads the query-param limit and show only limit results"
   [request]
 
-  ;(println (or (get (:query-params request) "limit") 10))
-  (def limit (Integer. (get (:query-params request) "limit")))
+  (def limit (or (get (:query-params request) "limit") 10))
   (println limit)
   {:status 200
    :headers {"Content-Type" "application/json"}
-   :body (json/generate-string (scrapper/list-top-movies limit))})
+   :body (json/generate-string (scrapper/list-top-movies (Integer. limit)))})
 
 (def app
   (-> handler
       wrap-params
       wrap-multipart-params))
 
-;(defn handler [request]
-;  {:status 200
-;   :headers {"Content-Type" "text/html"}
-;   :body (scrapper/list-top-movies 5)})
-
-;(jetty/run-jetty handler {:port 3000})
-
-;(scrapper/list-top-movies)
