@@ -22,6 +22,15 @@
                  :published (Integer. (str/escape (last info) {\( "" \) ""}))
                  :rating (Double. (get row 2))})))
 
+(take 2 movies)
+(defn list-top-movies "lists the top n movies" [n]
+  (for [row (take n (filter not-empty cols))]
+    (let [info (str/split (get row 1) #"\s")]
+      {:ranking (Integer. (str/escape (first info) {\. ""}))
+       :title (str/join " " (subvec info 1 (dec (count info))))
+       :published (Integer. (str/escape (last info) {\( "" \) ""}))
+       :rating (Double. (get row 2))})))
+
 (take 10 movies)
 
 
@@ -32,10 +41,10 @@
 (filter #(str/includes? (:title %) "Piratas do Caribe") movies)
 
 ;print table
-(clojure.pprint/print-table movies)
+;(clojure.pprint/print-table movies)
 
 ;print table in a clojure inspector
-(clojure.inspector/inspect-table movies)
+;(clojure.inspector/inspect-table movies)
 
 
 
